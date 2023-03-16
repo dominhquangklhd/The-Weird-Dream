@@ -22,6 +22,8 @@ public:
 
     SDL_Rect Get_rectICE_() {return rectICE_;}
     int Change_ice_status_ (int ice_change_);
+    int Get_num_occ(){return num_occurences_;}
+    int Get_ice_status() {return ice_status_;}
 
 private:
     SDL_Rect rectICE_;

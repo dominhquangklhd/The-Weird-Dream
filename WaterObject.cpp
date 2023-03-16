@@ -83,7 +83,7 @@ void WaterObject::Show(SDL_Renderer* des)
         W_num_attack_ = 0;
     }
 
-    if (rectW_.x <= -300)
+    if (rectW_.x <= -200)
     {
         w_attack_ = true;
         srand(time(0));
@@ -301,7 +301,7 @@ void WaterObject::Show(SDL_Renderer* des)
 
     }
 
-    if (rectW_.x <= -300)
+    if (rectW_.x <= -200)
     {
         w_attack_ = true;
         srand(time(0));

@@ -13,6 +13,7 @@ MainObject::MainObject()
     slowdownAT_ = 0;
     slowdownPW_ = 0;
     slowdownHITS_ = 0;
+    slowdownDEAD_ = 0;
 
     rectPW_.x = ON_THE_GROUND_X;
     rectPW_.y = ON_THE_GROUND_Y;

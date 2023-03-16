@@ -31,6 +31,8 @@ public:
     int Get_Threat_status_(){return Thr_status_;}
     int Get_num_AT() {return thrAttack_;}
 
+    int Get_num_occ(){return num_occurences_;}
+
 
 private:
 

@@ -30,8 +30,12 @@ public:
     SDL_Rect Get_rectPW_() {return rectPW_;}
     void Change_Char_status_(int change_s_);
     bool Get_status_Power() {return power_;}
+    int Get_fDead() {return fDead_;}
 
 private:
+    Mix_Music* music_jump = Mix_LoadMUS("Music Game//Jump_005.wav");
+    Mix_Chunk* chunk_jump = Mix_LoadWAV("Music Game//Jump_005.wav");
+    Mix_Chunk* chunk_attack = Mix_LoadWAV("Music Game//Explosion_003.wav");
 
     float x_pos_;
 
@@ -49,6 +53,7 @@ private:
     bool jumping_ = false;
     bool power_ = false;
     bool hits_ = false;
+
 };
 
 

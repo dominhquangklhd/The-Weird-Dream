@@ -13,6 +13,7 @@ public:
         RED_TEXT = 0,
         WHITE_TEXT = 1,
         BLACK_TEXT = 2,
+        BROWN_TEXT = 3,
     };
 
     bool LoadFromFile(std::string path);
@@ -20,7 +21,7 @@ public:
     void Free();
 
     //void SetColor(Uint32 red, Uint32 green, Uint32 blue);
-    void SetColor(int type);
+    void SetColor(const int& type);
 
     void RenderText(SDL_Renderer* screen,
                     int xp, int yp,

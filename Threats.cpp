@@ -63,7 +63,6 @@ void Threats::Show(SDL_Renderer* des)
         rectThr_.x = rand()%100 + WINDOW_WIDTH;
         thr_bool_attack_ = true;
         num_occurences_++;
-
     }
     if (threat_ >= 6)
     {
@@ -241,7 +240,7 @@ void Threats::Show(SDL_Renderer* des)
     thrDead_ = Thr_slowdownDead_/SLOW_THREAT;
     if(Thr_slowdownDead_ < 15*SLOW_THREAT) Thr_slowdownDead_++;
 
-    if (rectThr_.x <= -500)
+    if (rectThr_.x <= -400)
     {
          rectThr_.x = WINDOW_WIDTH;
          Thr_slowdownDead_ = 0;

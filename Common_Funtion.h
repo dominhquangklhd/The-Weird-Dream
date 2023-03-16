@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 
 const int WINDOW_WIDTH = 1260;
 const int WINDOW_HEIGHT = 600;
@@ -40,7 +41,17 @@ const int SPEED_BG_4 = 4;
 const int SPEED_BG_5 = 5;
 const int SPEED_BG_6 = 6;
 
+const int NUM_OF_TYPE = 6;
+const int ENEMY_TYPE_1 = 0;
+const int ENEMY_TYPE_2 = 1;
+const int ENEMY_TYPE_3 = 2;
+const int ENEMY_TYPE_4 = 3;
+const int ENEMY_TYPE_5 = 4;
+const int ENEMY_TYPE_6 = 5;
 
+const int THEME_MUSIC = 1;
+const int JUMP_MUSIC = 2;
+const int ATTACK_MUSIC = 3;
 
 
 #endif // COMMON_FUNTION_H_INCLUDED

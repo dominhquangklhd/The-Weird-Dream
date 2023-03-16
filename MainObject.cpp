@@ -356,6 +356,7 @@ void MainObject::Show(SDL_Renderer* des)
     fDead_ = slowdownDEAD_/SLOW_ACTION;
     slowdownDEAD_++;
     if (fDead_ > 7) fDead_ = 7;
+    std::cout << slowdownDEAD_ << std::endl;
     if (slowdownDEAD_ >= 8*SLOW_ACTION && rectC_.y == ON_THE_GROUND_Y)
     {
         slowdownDEAD_ = 0;
@@ -377,8 +378,10 @@ void MainObject::HandleInputAction(SDL_Event events)
             {
             case SDLK_SPACE:
                 {
-                if (rectC_.y == ON_THE_GROUND_Y && fAttack_ == 0)
+                if (rectC_.y == ON_THE_GROUND_Y && fAttack_ == 0 && status_ != DEAD)
                     {
+                    //Mix_PlayMusic(music_jump, 1);
+                    Mix_PlayChannel(JUMP_MUSIC, chunk_jump, 0);
                     status_ = JUMP;
                     jumping_ = true;
                     }
@@ -386,7 +389,11 @@ void MainObject::HandleInputAction(SDL_Event events)
             break;
             case SDLK_t:
                 {
+                    if (status_ != ATTACK && status_ != DEAD)
+                    {
+                    Mix_PlayChannel(ATTACK_MUSIC, chunk_attack, 0);
                     status_ = ATTACK;
+                    }
                 }
             break;
             }

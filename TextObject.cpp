@@ -37,29 +37,27 @@ void TextObject::Free()
     }
 }
 
-//void TextObject::SetColor(Uint32 red, Uint32 green, Uint32 blue)
-//{
-//    text_color_.r = red;
-//    text_color_.g = green;
-//    text_color_.b = blue;
-//
-//}
 
-void TextObject::SetColor(int type)
+void TextObject::SetColor(const int& type)
 {
     if (type == RED_TEXT)
     {
-        SDL_Color color = {255, 0, 0};
+        SDL_Color color = {128, 0, 0};
         text_color_ = color;
     }
-    else if (type = WHITE_TEXT)
+    else if (type == WHITE_TEXT)
     {
         SDL_Color color = {255, 255, 255};
         text_color_ = color;
     }
-    else if (type = BLACK_TEXT)
+    else if (type == BLACK_TEXT)
     {
         SDL_Color color = {0, 0, 0};
+        text_color_ = color;
+    }
+    else if (type == BROWN_TEXT)
+    {
+        SDL_Color color = {64, 0, 0};
         text_color_ = color;
     }
 }

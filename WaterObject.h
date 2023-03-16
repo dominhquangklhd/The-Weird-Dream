@@ -23,6 +23,7 @@ public:
     void Show(SDL_Renderer* des);
 
     SDL_Rect Get_rectW_() const {return rectW_;}
+    int Get_num_occ(){return num_occurences_;}
 
 
 private:
