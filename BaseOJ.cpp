@@ -30,7 +30,7 @@ bool BaseOJ::LoadImg(std::string path, SDL_Renderer* screen)
 
 bool BaseOJ::LoadImgBG(std::string pathBG, SDL_Renderer* screenBG)
 {
-
+    Free();
     p_object_ = IMG_LoadTexture(screenBG, pathBG.c_str());
 
     rect_.w = WINDOW_WIDTH;
@@ -38,6 +38,23 @@ bool BaseOJ::LoadImgBG(std::string pathBG, SDL_Renderer* screenBG)
 
     rect2_.w = WINDOW_WIDTH;
     rect2_.h = WINDOW_HEIGHT;
+
+    return p_object_ != NULL;
+}
+
+bool BaseOJ::LoadImgOutSide(std::string path, SDL_Renderer* screen, int x, int y)
+{
+    Free();
+    p_object_ = IMG_LoadTexture(screen, path.c_str());
+    rect_.x = x;
+    rect_.y = y;
+
+    SDL_QueryTexture(p_object_, NULL, NULL, &rect_.w, &rect_.h);
+
+    rect_.w = rect_.w*5 + 50;
+    rect_.h = rect_.h*5 + 30;
+
+    SDL_RenderCopy(screen, p_object_, NULL, &rect_);
 
     return p_object_ != NULL;
 }

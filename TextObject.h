@@ -14,6 +14,7 @@ public:
         WHITE_TEXT = 1,
         BLACK_TEXT = 2,
         BROWN_TEXT = 3,
+        PINK_TEXT = 4,
     };
 
     bool LoadFromFile(std::string path);

@@ -277,10 +277,12 @@ void MainObject::Show(SDL_Renderer* des)
     fHits_ = slowdownHITS_/SLOW_ACTION;
     slowdownHITS_++;
 
+    if (fHits_ == 0){
     rectHITS_.x = x_pos_ + 45;
     rectHITS_.y = rectPW_.y + 15;
     rectHITS_.w = width_frame_;
     rectHITS_.h = height_frame_;
+    }
 
     SDL_RenderCopy(des, p_object_ , NULL, &rectHITS_);
 

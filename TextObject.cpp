@@ -60,6 +60,11 @@ void TextObject::SetColor(const int& type)
         SDL_Color color = {64, 0, 0};
         text_color_ = color;
     }
+    else if (type == PINK_TEXT)
+    {
+        SDL_Color color = {255, 220, 220};
+        text_color_ = color;
+    }
 }
 
 void TextObject::RenderText(SDL_Renderer* screen,

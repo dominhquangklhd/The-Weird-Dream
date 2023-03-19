@@ -12,16 +12,12 @@
 
 const int WINDOW_WIDTH = 1260;
 const int WINDOW_HEIGHT = 600;
-const std::string WINDOW_TITLE = "MyGame";
+const std::string WINDOW_TITLE = "The Weird Dream";
 const int SCREEN_BPP = 32;
 
 static SDL_Window* g_window = NULL;
 static SDL_Renderer* g_screen = NULL;
 static SDL_Event g_event;
-
-//const int COLOR_KEY_R = 167;
-//const int COLOR_KEY_G = 175;
-//const int COLOR_KEY_B = 180;
 
 const int G_THR_IDLE = 0;
 const int G_THR_ATTACK = 1;
@@ -52,6 +48,10 @@ const int ENEMY_TYPE_6 = 5;
 const int THEME_MUSIC = 1;
 const int JUMP_MUSIC = 2;
 const int ATTACK_MUSIC = 3;
+const int MENU_MUSIC = 4;
+
+const int xm_p = 500, ym_p = 250;
+const int xm_e = 500, ym_e = 400;
 
 
 #endif // COMMON_FUNTION_H_INCLUDED

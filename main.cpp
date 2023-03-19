@@ -9,6 +9,7 @@
 #include "WaterObject.h"
 #include "IceObject.h"
 #include "Thr_Angry.h"
+#include "MenuGame.h"
 
 
 BaseOJ g_background;
@@ -20,6 +21,7 @@ BaseOJ g_background6;
 
 TTF_Font* font_score;
 TTF_Font* htp;
+TTF_Font* gf_menu;
 
 
 void init()
@@ -32,10 +34,12 @@ void init()
     TTF_Init();
     font_score = TTF_OpenFont("font-full//dlxfont.ttf", 30);
     htp = TTF_OpenFont("font-full//dlxfont.ttf", 15);
+    gf_menu = TTF_OpenFont("font-full//dlxfont.ttf", 60);
 
     Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, ATTACK_MUSIC, 4096);
     Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, JUMP_MUSIC, 4096);
     Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, THEME_MUSIC, 4096);
+    Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, MENU_MUSIC, 4096);
 
 }
 
@@ -96,15 +100,16 @@ int main(int argv, char* args[])
 
     TextObject your_score;
     your_score.SetColor(TextObject::RED_TEXT);
-
     TextObject your_best;
     your_best.SetColor(TextObject::BROWN_TEXT);
-
     TextObject how_to_play1;
     how_to_play1.SetColor(TextObject::RED_TEXT);
-
     TextObject how_to_play2;
     how_to_play2.SetColor(TextObject::RED_TEXT);
+    TextObject text_menu_play;
+    text_menu_play.SetColor(TextObject::PINK_TEXT);
+    TextObject text_menu_exit;
+    text_menu_exit.SetColor(TextObject::PINK_TEXT);
 
     LoadBackground1();
     LoadBackground2();
@@ -119,46 +124,106 @@ int main(int argv, char* args[])
     IceObject i_ice;
     ImgTimer t_timer;
     Thr_Angry a_angry;
+    MenuGame m_menu;
+    BaseOJ out_side_p;
+    BaseOJ out_side_e;
 
-    bool agree = true;
-    bool b_text = true;
-    bool b_char_dead = false;
-
-    int ene_type, ene_type_lv3;
-    int num_ene_past, num_wi_past;
-    int NUM_ENEMY_APEAR = 0, NUM_WI;
     Uint32 past_time;
     Uint32 text_time;
-
 
     Mix_Chunk* chunk2 = Mix_LoadWAV("Music Game//DavidKBD - Concerto Pack - 02 - In the Hall of the Mountain King (Grieg).ogg");
     Mix_Chunk* chunk_angry = Mix_LoadWAV("Music Game//Suck 1V2.wav");
     Mix_Chunk* chunk1 = Mix_LoadWAV("Music Game//3_Travel_1_Master.mp3");
-    int turn = 0;
 
+    std::string m_play = "PLAY";
+    std::string m_exit = "EXIT";
+    std::string m_play2 = " XX ";
+    std::string m_exit2 = " @@ ";
+    std::string highest_score = "Best: ";
+    std::string help1 = "Press 't' to ATTACK";
+    std::string help2 = "Press 'SPACE' to JUMP";
+
+    int ene_type, ene_type_lv3;
+    int num_ene_past, num_wi_past;
+    int NUM_ENEMY_APEAR = 0, NUM_WI;
+    int turn = 0;
     int xp = -1200, speed_text = 50;
+    int play = 1, exit = 1;
+
+    bool agree = true;
+    bool b_text = true;
+    bool b_char_dead = false;
+    bool b_menu = true;
 
     bool isrunning = true;
+    bool play_game = true;
     while (isrunning)
     {
+        while(b_menu == true){
+        SDL_RenderClear(g_screen);
+
+        isrunning = m_menu.Get_b_isrunning();
+        play_game = m_menu.Get_b_play_game();
+        b_menu = m_menu.Get_b_menu();
+        while  (SDL_PollEvent(&g_event))
+        {
+            if (g_event.type == SDL_QUIT) return 0;
+            m_menu.HandleInputMenu(g_event);
+        }
+
+        m_menu.LoadImgBG("Menu//Main_Menu.png", g_screen);
+        m_menu.Show(g_screen);
+
+        out_side_p.LoadImgOutSide("Menu//khung3.png", g_screen, xm_p - 30, ym_p - 75);
+        out_side_p.LoadImgOutSide("Menu//khung3.png", g_screen, xm_e - 30, ym_e - 75);
+
+        if (m_menu.Get_n_play() == 1){
+        text_menu_play.SetText(m_play);
+        text_menu_play.LoadFromRenderText(gf_menu, g_screen);
+        text_menu_play.RenderText(g_screen, xm_p, ym_p);
+        }
+
+        if (m_menu.Get_n_play() == 2){
+        text_menu_play.SetText(m_play2);
+        text_menu_play.LoadFromRenderText(gf_menu, g_screen);
+        text_menu_play.RenderText(g_screen, xm_p, ym_p);
+        }
+
+        if (m_menu.Get_n_exit() == 1){
+        text_menu_exit.SetText(m_exit);
+        text_menu_exit.LoadFromRenderText(gf_menu, g_screen);
+        text_menu_exit.RenderText(g_screen, xm_e, ym_e);
+        }
+
+        if (m_menu.Get_n_exit() == 2){
+        text_menu_exit.SetText(m_exit2);
+        text_menu_exit.LoadFromRenderText(gf_menu, g_screen);
+        text_menu_exit.RenderText(g_screen, xm_e, ym_e);
+        }
+
+        SDL_RenderPresent(g_screen);
+        }
+//////////////////
+
+        while (play_game == true){
+
         if (turn == 0) Mix_PlayChannel(THEME_MUSIC, chunk1, 0);
         if (turn == 0) turn++;
         t_timer.start();
 
-        std::string str_time = "Score: ";
-        std::string highest_score = "Best: ";
-        std::string help1 = "Press 't' to ATTACK";
-        std::string help2 = "Press 'SPACE' to JUMP";
         Uint32 current_time = t_timer.get_ticks()/1000;
         Uint32 score = t_timer.get_ticks()/100;
-
 
         while  (SDL_PollEvent(&g_event))
         {
             if (g_event.type == SDL_QUIT)
             {
                 isrunning = false;
+                play_game = false;
             }
+            your_best.SetText(highest_score);
+            your_best.LoadFromRenderText(font_score, g_screen);
+            your_best.RenderText(g_screen, WINDOW_WIDTH/2 - 150, 15);
             p_player.HandleInputAction(g_event);
         }
 
@@ -169,10 +234,10 @@ int main(int argv, char* args[])
             g_background3.Render(g_screen, NULL, SPEED_BG_3);
             g_background4.Render(g_screen, NULL, SPEED_BG_4);
             g_background5.Render(g_screen, NULL, SPEED_BG_5);
-
+//lv1
+///////////////////
             if (current_time >= 5)
             {
-//lv1
                 if (t_threat.Get_num_occ() == 0) t_threat.Show(g_screen);
                 if (t_threat.Get_num_occ() == 1 && i_ice.Get_num_occ() == 0) i_ice.Show(g_screen);
                 if (i_ice.Get_num_occ() == 1 && w_water.Get_num_occ() == 0) w_water.Show(g_screen);
@@ -183,8 +248,9 @@ int main(int argv, char* args[])
 
                 NUM_ENEMY_APEAR = t_threat.Get_num_occ() + i_ice.Get_num_occ() + w_water.Get_num_occ();
                 NUM_WI = i_ice.Get_num_occ() + w_water.Get_num_occ();
-
+///////////////////
 //lv2
+///////////////////////
                 if (agree == true && NUM_ENEMY_APEAR >= 6)
                 {
                     past_time = current_time;
@@ -234,8 +300,9 @@ int main(int argv, char* args[])
                         if (NUM_ENEMY_APEAR > num_ene_past + 1) agree = true;
                     }
                 }
-
+/////////////////////////
 //lv_3
+///////////////////////////
                 if (NUM_ENEMY_APEAR == 30 && a_angry.Get_bool_angry() == true)
                 {
                     if (turn == 1) Mix_PlayChannel(THEME_MUSIC, chunk_angry, 7);
@@ -262,11 +329,10 @@ int main(int argv, char* args[])
                     t_threat.Show(g_screen);
                 }
             }
+////////////////////////
 
                 p_player.Show(g_screen);
                 g_background6.Render(g_screen, NULL, SPEED_BG_6);
-
-        //std::cout << p_player.Get_fDead() << std::endl;
 
 //thr_dead
             if (p_player.Get_status_Power() == true
@@ -295,18 +361,8 @@ int main(int argv, char* args[])
             }
             if (b_char_dead == true && p_player.Get_fDead() == 7){}
 
-
-//            if (val_time <= 0)
-//            {
-//                if (MessageBox(NULL, L"GAME OVER", L"Info", MB_OK | MB_ICONSTOP) == IDOK)
-//                {
-//                    //
-//                }
-//            }
-//            else
-           // {
+///////////////////
                 std::string str_val = std::to_string(score);
-                str_time += str_val;
 
                 your_score.SetText(str_val);
                 your_score.LoadFromRenderText(font_score, g_screen);
@@ -317,11 +373,9 @@ int main(int argv, char* args[])
                 if (score >= 10000 && score < 100000) your_score.RenderText(g_screen, WINDOW_WIDTH - 150, 15);
                 if (score >= 100000) your_score.RenderText(g_screen, WINDOW_WIDTH - 180, 15);
 
-
                 your_best.SetText(highest_score);
                 your_best.LoadFromRenderText(font_score, g_screen);
                 your_best.RenderText(g_screen, WINDOW_WIDTH/2 - 150, 15);
-
 
             if (xp <= WINDOW_WIDTH)
             {
@@ -344,9 +398,15 @@ int main(int argv, char* args[])
                 how_to_play2.LoadFromRenderText(htp, g_screen);
                 how_to_play2.RenderText(g_screen, xp, 85);
             }
-           // }
 
+            if (m_menu.Get_mrect().y + WINDOW_HEIGHT >= 0){
+            m_menu.LoadImgBG("Menu//Main_Menu.png", g_screen);
+            m_menu.MoveImg(g_screen);
+            }
+
+/////////////////////////
             SDL_RenderPresent(g_screen);
+    }
     }
     SDL_Delay(100);
     sdlQuit(g_screen, g_window);

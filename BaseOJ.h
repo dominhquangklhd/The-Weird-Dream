@@ -13,7 +13,8 @@ public:
     void Render(SDL_Renderer* des, SDL_Rect* clip, int speed);
     void Free();
 
-    bool LoadImgBG(std::string pathBG, SDL_Renderer* screenBG);
+    virtual bool LoadImgBG(std::string pathBG, SDL_Renderer* screenBG);
+    bool LoadImgOutSide(std::string path, SDL_Renderer* screen, int x, int y);
 
 protected:
     SDL_Rect rect_;
