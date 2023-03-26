@@ -163,6 +163,9 @@ int main(int argv, char* args[])
     int turn = 0;
     int xp = -1200, speed_text = 50;
 
+    Uint32 frameStart;
+    int frameTime;
+
     bool agree = true;
     bool b_text = true;
     bool b_char_dead = false;
@@ -219,6 +222,7 @@ int main(int argv, char* args[])
 //////////////////
         while (play_game == true){
 
+        frameStart = SDL_GetTicks();
         int score = t_timer.get_ticks()/100;
         int current_time = t_timer.get_ticks()/1000;
 
@@ -369,14 +373,14 @@ int main(int argv, char* args[])
             }
 
 ///////////////////delay
-//        int delta_time = t_timer.get_ticks();
-//        int time_one_frame = 1000/FRAME_PER_SECOND;
-//
-//        std::cout << delta_time << std::endl;
-//        if (delta_time < time_one_frame)
-//        {
-//            SDL_Delay(time_one_frame - delta_time);
-//        }
+        frameTime = SDL_GetTicks() - frameStart;
+        int frameDelay = 1000/FRAME_PER_SECOND;
+
+        std::cout << frameDelay - frameTime << std::endl;
+        if (frameTime < frameDelay)
+        {
+            SDL_Delay(frameDelay - frameTime);
+        }
 /////////////////////////
         std::string str_val = std::to_string(score);
         your_score.SetText(str_val);
