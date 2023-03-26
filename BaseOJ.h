@@ -15,6 +15,7 @@ public:
 
     virtual bool LoadImgBG(std::string pathBG, SDL_Renderer* screenBG);
     bool LoadImgOutSide(std::string path, SDL_Renderer* screen, int x, int y);
+    virtual bool LoadImgCommon(std::string path, SDL_Renderer* screen, int x, int y, int w, int h);
 
 protected:
     SDL_Rect rect_;

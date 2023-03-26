@@ -18,7 +18,36 @@ Threats::Threats()
 
 Threats::~Threats()
 {
+    threat_ = 0;
+    thrAttack_ = 0;
+    thrDead_ = 0;
 
+    Thr_slowdown_ = 0;
+    Thr_slowdownAT_ = 0;
+    Thr_slowdownDead_ = 0;
+
+    Thr_status_ = THR_IDLE;
+    rectThr_.x = WINDOW_WIDTH;
+}
+
+void Threats::Reset_threat()
+{
+    threat_ = 0;
+    thrAttack_ = 0;
+    thrDead_ = 0;
+
+    Thr_slowdown_ = 0;
+    Thr_slowdownAT_ = 0;
+    Thr_slowdownDead_ = 0;
+
+    Thr_status_ = THR_IDLE;
+    rectThr_.x = WINDOW_WIDTH;
+
+    thr_bool_idle_ = false;
+    thr_bool_attack_ = true;
+    thr_bool_dead_ = false;
+
+    num_occurences_ = 0;
 }
 
 bool Threats::LoadImg(std::string path, SDL_Renderer* screen)

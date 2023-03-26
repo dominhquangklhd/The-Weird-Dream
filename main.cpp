@@ -11,6 +11,9 @@
 #include "Thr_Angry.h"
 #include "MenuGame.h"
 
+SDL_Window* g_window = NULL;
+SDL_Renderer* g_screen = NULL;
+SDL_Event g_event;
 
 BaseOJ g_background;
 BaseOJ g_background2;
@@ -22,6 +25,22 @@ BaseOJ g_background6;
 TTF_Font* font_score;
 TTF_Font* htp;
 TTF_Font* gf_menu;
+
+Threats t_threat;
+WaterObject w_water;
+IceObject i_ice;
+Thr_Angry a_angry;
+BaseOJ out_side_p;
+
+TextObject your_score;
+TextObject your_best;
+TextObject text_menu_play;
+TextObject text_menu_exit;
+
+Mix_Chunk* chunk2;
+Mix_Chunk* chunk_angry;
+Mix_Chunk* chunk1;
+
 
 
 void init()
@@ -93,22 +112,35 @@ void sdlQuit(SDL_Renderer* renderer, SDL_Window* window)
     SDL_Quit();
 }
 
+void Reset_all()
+{
+    Mix_FreeChunk(chunk1);
+    Mix_FreeChunk(chunk2);
+    Mix_FreeChunk(chunk_angry);
+    chunk1 = Mix_LoadWAV("Music Game//3_Travel_1_Master.mp3");
+    chunk2 = Mix_LoadWAV("Music Game//DavidKBD - Concerto Pack - 02 - In the Hall of the Mountain King (Grieg).ogg");
+    chunk_angry = Mix_LoadWAV("Music Game//Suck 1V2.wav");
+}
+
 int main(int argv, char* args[])
 {
 
     init();
 
-    TextObject your_score;
-    your_score.SetColor(TextObject::RED_TEXT);
-    TextObject your_best;
-    your_best.SetColor(TextObject::BROWN_TEXT);
+    MenuGame m_menu;
+    MenuGame m_lose;
+    MenuGame m_again;
+    MenuGame m_home;
+    MainObject p_player;
+    ImgTimer t_timer;
     TextObject how_to_play1;
-    how_to_play1.SetColor(TextObject::RED_TEXT);
     TextObject how_to_play2;
+
+    your_score.SetColor(TextObject::RED_TEXT);
+    your_best.SetColor(TextObject::BROWN_TEXT);
+    how_to_play1.SetColor(TextObject::RED_TEXT);
     how_to_play2.SetColor(TextObject::RED_TEXT);
-    TextObject text_menu_play;
     text_menu_play.SetColor(TextObject::PINK_TEXT);
-    TextObject text_menu_exit;
     text_menu_exit.SetColor(TextObject::PINK_TEXT);
 
     LoadBackground1();
@@ -118,45 +150,27 @@ int main(int argv, char* args[])
     LoadBackground5();
     LoadBackground6();
 
-    MainObject p_player;
-    Threats t_threat;
-    WaterObject w_water;
-    IceObject i_ice;
-    ImgTimer t_timer;
-    Thr_Angry a_angry;
-    MenuGame m_menu;
-    BaseOJ out_side_p;
-    BaseOJ out_side_e;
-
     Uint32 past_time;
     Uint32 text_time;
 
-    Mix_Chunk* chunk2 = Mix_LoadWAV("Music Game//DavidKBD - Concerto Pack - 02 - In the Hall of the Mountain King (Grieg).ogg");
-    Mix_Chunk* chunk_angry = Mix_LoadWAV("Music Game//Suck 1V2.wav");
-    Mix_Chunk* chunk1 = Mix_LoadWAV("Music Game//3_Travel_1_Master.mp3");
-
-    std::string m_play = "PLAY";
-    std::string m_exit = "EXIT";
-    std::string m_play2 = " XX ";
-    std::string m_exit2 = " @@ ";
-    std::string highest_score = "Best: ";
-    std::string help1 = "Press 't' to ATTACK";
-    std::string help2 = "Press 'SPACE' to JUMP";
+    chunk2 = Mix_LoadWAV("Music Game//DavidKBD - Concerto Pack - 02 - In the Hall of the Mountain King (Grieg).ogg");
+    chunk_angry = Mix_LoadWAV("Music Game//Suck 1V2.wav");
+    chunk1 = Mix_LoadWAV("Music Game//3_Travel_1_Master.mp3");
 
     int ene_type, ene_type_lv3;
     int num_ene_past, num_wi_past;
     int NUM_ENEMY_APEAR = 0, NUM_WI;
     int turn = 0;
     int xp = -1200, speed_text = 50;
-    int play = 1, exit = 1;
 
     bool agree = true;
     bool b_text = true;
     bool b_char_dead = false;
     bool b_menu = true;
-
     bool isrunning = true;
     bool play_game = true;
+    bool b_wt_return = false;
+
     while (isrunning)
     {
         while(b_menu == true){
@@ -168,7 +182,7 @@ int main(int argv, char* args[])
         while  (SDL_PollEvent(&g_event))
         {
             if (g_event.type == SDL_QUIT) return 0;
-            m_menu.HandleInputMenu(g_event);
+            m_menu.HandleInputMenu(g_event, MenuGame::NOR);
         }
 
         m_menu.LoadImgBG("Menu//Main_Menu.png", g_screen);
@@ -182,19 +196,16 @@ int main(int argv, char* args[])
         text_menu_play.LoadFromRenderText(gf_menu, g_screen);
         text_menu_play.RenderText(g_screen, xm_p, ym_p);
         }
-
         if (m_menu.Get_n_play() == 2){
         text_menu_play.SetText(m_play2);
         text_menu_play.LoadFromRenderText(gf_menu, g_screen);
         text_menu_play.RenderText(g_screen, xm_p, ym_p);
         }
-
         if (m_menu.Get_n_exit() == 1){
         text_menu_exit.SetText(m_exit);
         text_menu_exit.LoadFromRenderText(gf_menu, g_screen);
         text_menu_exit.RenderText(g_screen, xm_e, ym_e);
         }
-
         if (m_menu.Get_n_exit() == 2){
         text_menu_exit.SetText(m_exit2);
         text_menu_exit.LoadFromRenderText(gf_menu, g_screen);
@@ -204,15 +215,19 @@ int main(int argv, char* args[])
         SDL_RenderPresent(g_screen);
         }
 //////////////////
-
+        t_timer.start();
+//////////////////
         while (play_game == true){
+
+        int score = t_timer.get_ticks()/100;
+        int current_time = t_timer.get_ticks()/1000;
+
+        SDL_RenderClear(g_screen);
+        NUM_ENEMY_APEAR = t_threat.Get_num_occ() + i_ice.Get_num_occ() + w_water.Get_num_occ();
+        NUM_WI = i_ice.Get_num_occ() + w_water.Get_num_occ();
 
         if (turn == 0) Mix_PlayChannel(THEME_MUSIC, chunk1, 0);
         if (turn == 0) turn++;
-        t_timer.start();
-
-        Uint32 current_time = t_timer.get_ticks()/1000;
-        Uint32 score = t_timer.get_ticks()/100;
 
         while  (SDL_PollEvent(&g_event))
         {
@@ -221,13 +236,8 @@ int main(int argv, char* args[])
                 isrunning = false;
                 play_game = false;
             }
-            your_best.SetText(highest_score);
-            your_best.LoadFromRenderText(font_score, g_screen);
-            your_best.RenderText(g_screen, WINDOW_WIDTH/2 - 150, 15);
             p_player.HandleInputAction(g_event);
         }
-
-            SDL_RenderClear(g_screen);
 
             g_background.Render(g_screen, NULL, SPEED_BG_1);
             g_background2.Render(g_screen, NULL, SPEED_BG_2);
@@ -246,8 +256,6 @@ int main(int argv, char* args[])
                 if (w_water.Get_num_occ() == 1 && i_ice.Get_num_occ() == 2) w_water.Show(g_screen);
                 if (t_threat.Get_num_occ() == 1 && w_water.Get_num_occ() == 2) t_threat.Show(g_screen);
 
-                NUM_ENEMY_APEAR = t_threat.Get_num_occ() + i_ice.Get_num_occ() + w_water.Get_num_occ();
-                NUM_WI = i_ice.Get_num_occ() + w_water.Get_num_occ();
 ///////////////////
 //lv2
 ///////////////////////
@@ -261,7 +269,7 @@ int main(int argv, char* args[])
                     agree = false;
                 }
 
-                if (NUM_ENEMY_APEAR >= 6 && NUM_ENEMY_APEAR < 30)
+                if (NUM_ENEMY_APEAR >= 6 && NUM_ENEMY_APEAR < num_lv3)
                 {
                     if (ene_type == ENEMY_TYPE_1)
                     {
@@ -303,13 +311,13 @@ int main(int argv, char* args[])
 /////////////////////////
 //lv_3
 ///////////////////////////
-                if (NUM_ENEMY_APEAR == 30 && a_angry.Get_bool_angry() == true)
+                if (NUM_ENEMY_APEAR == num_lv3 && a_angry.Get_bool_angry() == true)
                 {
                     if (turn == 1) Mix_PlayChannel(THEME_MUSIC, chunk_angry, 7);
                     if (turn == 1) turn++;
                     a_angry.Show(g_screen);
                 }
-                if (NUM_ENEMY_APEAR >= 30 && a_angry.Get_bool_angry() == false)
+                if (NUM_ENEMY_APEAR >= num_lv3 && a_angry.Get_bool_angry() == false)
                 {
                     if (turn == 2) Mix_PlayChannel(THEME_MUSIC, chunk2, 8);
                     if (turn == 2) turn++;
@@ -359,56 +367,114 @@ int main(int argv, char* args[])
                     b_char_dead = true;
                 }
             }
-            if (b_char_dead == true && p_player.Get_fDead() == 7){}
 
-///////////////////
-                std::string str_val = std::to_string(score);
+///////////////////delay
+//        int delta_time = t_timer.get_ticks();
+//        int time_one_frame = 1000/FRAME_PER_SECOND;
+//
+//        std::cout << delta_time << std::endl;
+//        if (delta_time < time_one_frame)
+//        {
+//            SDL_Delay(time_one_frame - delta_time);
+//        }
+/////////////////////////
+        std::string str_val = std::to_string(score);
+        your_score.SetText(str_val);
+        your_score.LoadFromRenderText(font_score, g_screen);
 
-                your_score.SetText(str_val);
-                your_score.LoadFromRenderText(font_score, g_screen);
-                if (score < 10)  your_score.RenderText(g_screen, WINDOW_WIDTH - 40, 15);
-                if (score >= 10 && score < 100) your_score.RenderText(g_screen, WINDOW_WIDTH - 70, 15);
-                if (score >= 100 && score < 1000) your_score.RenderText(g_screen, WINDOW_WIDTH - 100, 15);
-                if (score >= 1000 && score < 10000) your_score.RenderText(g_screen, WINDOW_WIDTH - 120, 15);
-                if (score >= 10000 && score < 100000) your_score.RenderText(g_screen, WINDOW_WIDTH - 150, 15);
-                if (score >= 100000) your_score.RenderText(g_screen, WINDOW_WIDTH - 180, 15);
+        if (score < 10)  your_score.RenderText(g_screen, WINDOW_WIDTH - 40, 15);
+        if (score >= 10 && score < 100) your_score.RenderText(g_screen, WINDOW_WIDTH - 70, 15);
+        if (score >= 100 && score < 1000) your_score.RenderText(g_screen, WINDOW_WIDTH - 100, 15);
+        if (score >= 1000 && score < 10000) your_score.RenderText(g_screen, WINDOW_WIDTH - 120, 15);
+        if (score >= 10000 && score < 100000) your_score.RenderText(g_screen, WINDOW_WIDTH - 150, 15);
+        if (score >= 100000) your_score.RenderText(g_screen, WINDOW_WIDTH - 180, 15);
 
-                your_best.SetText(highest_score);
-                your_best.LoadFromRenderText(font_score, g_screen);
-                your_best.RenderText(g_screen, WINDOW_WIDTH/2 - 150, 15);
+        your_best.SetText(highest_score);
+        your_best.LoadFromRenderText(font_score, g_screen);
+        your_best.RenderText(g_screen, WINDOW_WIDTH/2 - 150, 15);
 
-            if (xp <= WINDOW_WIDTH)
+        if (xp <= WINDOW_WIDTH)
+        {
+            if (xp < 10) xp += speed_text;
+            if (xp >= 10 && b_text == true)
             {
-                if (xp < 10) xp += speed_text;
-                if (xp >= 10 && b_text == true)
-                {
-                    text_time = current_time;
-                    b_text = false;
-                }
-                if (current_time - text_time >= 5 && b_text == false)
-                {
-                    xp += speed_text;
-                }
-
-                how_to_play1.SetText(help1);
-                how_to_play1.LoadFromRenderText(htp, g_screen);
-                how_to_play1.RenderText(g_screen, xp, 60);
-
-                how_to_play2.SetText(help2);
-                how_to_play2.LoadFromRenderText(htp, g_screen);
-                how_to_play2.RenderText(g_screen, xp, 85);
+                text_time = current_time;
+                b_text = false;
             }
+            if (current_time - text_time >= 5 && b_text == false)
+            {
+                xp += speed_text;
+            }
+
+            how_to_play1.SetText(help1);
+            how_to_play1.LoadFromRenderText(htp, g_screen);
+            how_to_play1.RenderText(g_screen, xp, 60);
+
+            how_to_play2.SetText(help2);
+            how_to_play2.LoadFromRenderText(htp, g_screen);
+            how_to_play2.RenderText(g_screen, xp, 85);
+        }
 
             if (m_menu.Get_mrect().y + WINDOW_HEIGHT >= 0){
             m_menu.LoadImgBG("Menu//Main_Menu.png", g_screen);
             m_menu.MoveImg(g_screen);
             }
+//////play_again
+            if (b_char_dead == true && p_player.Get_fDead() == 7 && p_player.Get_rectC_().y == ON_THE_GROUND_Y){
+                SDL_Delay(1000);
 
+                xp = -1200;
+                b_char_dead = false;
+                b_wt_return = true;
+                b_text = true;
+                turn = 0;
+
+                Reset_all();
+                m_menu.Reset_menu();
+                p_player.Reset_obj();
+                w_water.Reset_water();
+                i_ice.Reset_ice();
+                t_threat.Reset_threat();
+                while (b_wt_return == true)
+                {
+                    m_lose.LoadImgCommon("Menu//Want_to_return.png", g_screen, 218, 20, 0, 0);
+                    m_lose.Show(g_screen);
+                    m_again.LoadImgCommon("Menu//Again1.png", g_screen, xm_a, ym_a, 100, 100);
+                    m_again.Show(g_screen);
+                    m_home.LoadImgCommon("Menu//Home1.png", g_screen, xm_h, ym_h, 100, 100);
+                    m_home.Show(g_screen);
+
+                    while (SDL_PollEvent(&g_event)){
+                    m_again.HandleInputMenu(g_event, MenuGame::LOSE);
+                    m_home.HandleInputMenu(g_event, MenuGame::LOSE);
+                    if (g_event.type == SDL_QUIT) return 0;
+                    }
+
+                    if (m_again.Get_n_again() == 2){
+                    m_again.LoadImgCommon("Menu//Again2.png", g_screen, xm_a, ym_a, 100, 100);
+                    b_menu = m_again.Get_b_menu();
+                    play_game = m_again.Get_b_play_game();
+                    b_wt_return = m_again.Get_b_wt_return();
+                    }
+                    if (m_home.Get_n_home() == 2){
+                    m_home.LoadImgCommon("Menu//Home2.png", g_screen, xm_h, ym_h, 100, 100);
+                    b_menu = m_home.Get_b_menu();
+                    play_game = m_home.Get_b_play_game();
+                    b_wt_return = m_again.Get_b_wt_return();
+                    }
+                    SDL_RenderPresent(g_screen);
+                }
+                m_again.Reset_menu();
+                m_home.Reset_menu();
+                t_timer.start();
+            }
 /////////////////////////
             SDL_RenderPresent(g_screen);
-    }
+        }//finish_playgame
     }
     SDL_Delay(100);
     sdlQuit(g_screen, g_window);
     return 0;
 }
+
+

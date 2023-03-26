@@ -33,6 +33,8 @@ public:
 
     int Get_num_occ(){return num_occurences_;}
 
+    void Reset_threat();
+
 
 private:
 

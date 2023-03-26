@@ -40,7 +40,7 @@ void Threats::Show(SDL_Renderer* des)
             break;
         }
 
-    rectThr_.x -= 5;
+    rectThr_.x -= SPEED_BG_5;
     rectThr_.y = GROUND - height_threat_ - 50 + 40;
     rectThr_.w = width_threat_ + 50;
     rectThr_.h = height_threat_ + 50;
@@ -115,7 +115,7 @@ void Threats::Show(SDL_Renderer* des)
             break;
         }
 
-    rectThr_.x -= 5;
+    rectThr_.x -= SPEED_BG_5;
 
     SDL_RenderCopy(des, p_object_ , NULL, &rectThr_);
 
@@ -233,7 +233,7 @@ void Threats::Show(SDL_Renderer* des)
             break;
         }
 
-    rectThr_.x -= 5;
+    rectThr_.x -= SPEED_BG_5;
 
     SDL_RenderCopy(des, p_object_ , NULL, &rectThr_);
 

@@ -65,7 +65,7 @@ void WaterObject::Show(SDL_Renderer* des)
             break;
         }
 
-    rectW_.x -= 5;
+    rectW_.x -= SPEED_BG_5;
     rectW_.y = ON_THE_GROUND_Y + 60;
     rectW_.w = width_water_ - 20;
     rectW_.h = height_water_ - 20;
@@ -205,7 +205,7 @@ void WaterObject::Show(SDL_Renderer* des)
 
     SDL_RenderCopy(des, p_object_ , NULL, &rectW_);
 
-    rectW_.x -= 5;
+    rectW_.x -= SPEED_BG_5;
     W_num_attack_ = W_slowdown_S_/SLOW_THREAT;
     W_slowdown_S_++;
 
@@ -282,7 +282,7 @@ void WaterObject::Show(SDL_Renderer* des)
             break;
         }
 
-    rectW_.x -= 5;
+    rectW_.x -= SPEED_BG_5;
     rectW_.y = ON_THE_GROUND_Y + 60;
     rectW_.w = width_water_ - 20;
     rectW_.h = height_water_ - 20;
@@ -421,7 +421,7 @@ void WaterObject::Show(SDL_Renderer* des)
 
     SDL_RenderCopy(des, p_object_ , NULL, &rectW_);
 
-    rectW_.x -= 5;
+    rectW_.x -= SPEED_BG_5;
     W_num_attack_ = W_slowdown_S_/(SLOW_THREAT + 3);
     W_slowdown_S_++;
 

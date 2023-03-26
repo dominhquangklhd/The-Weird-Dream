@@ -71,6 +71,29 @@ void BaseOJ::Render(SDL_Renderer* des,SDL_Rect* clip, int speed)
 
 }
 
+ bool BaseOJ::LoadImgCommon(std::string path, SDL_Renderer* screen, int x, int y, int w, int h)
+ {
+    Free();
+    p_object_ = IMG_LoadTexture(screen, path.c_str());
+    rect_.x = x;
+    rect_.y = y;
+
+    SDL_QueryTexture(p_object_, NULL, NULL, &rect_.w, &rect_.h);
+
+    if (w == 0 || h == 0){
+    rect_.w = rect_.w;
+    rect_.h = rect_.h;
+    }
+    else {
+        rect_.w = w;
+        rect_.h = h;
+    }
+
+    SDL_RenderCopy(screen, p_object_, NULL, &rect_);
+
+    return p_object_ != NULL;
+ }
+
 void BaseOJ::Free()
 {
     if (p_object_ != NULL)

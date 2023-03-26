@@ -22,6 +22,8 @@ public:
     SDL_Rect Get_rect_ANGRY() const {return rect_angry;}
     bool Get_bool_angry() {return b_angry;}
 
+    void Reset_obj();
+
 private:
     SDL_Rect rect_angry;
 

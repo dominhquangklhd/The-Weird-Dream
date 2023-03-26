@@ -53,7 +53,7 @@ int ImgTimer::get_ticks()
         }
         else
         {
-            return start_tick_;
+            return SDL_GetTicks() - start_tick_;
         }
     }
     return 0;
@@ -68,5 +68,6 @@ bool ImgTimer::is_paused()
 {
     return is_paused_;
 }
+
 
 

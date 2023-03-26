@@ -32,6 +32,8 @@ public:
     bool Get_status_Power() {return power_;}
     int Get_fDead() {return fDead_;}
 
+    void Reset_obj();
+
 private:
     Mix_Music* music_jump = Mix_LoadMUS("Music Game//Jump_005.wav");
     Mix_Chunk* chunk_jump = Mix_LoadWAV("Music Game//Jump_005.wav");

@@ -14,6 +14,20 @@ Thr_Angry::~Thr_Angry()
 
 }
 
+void Thr_Angry::Reset_obj()
+{
+    rect_angry.x = WINDOW_WIDTH + 100;
+    rect_angry.y = 200;
+
+    angry_status = NOR;
+
+    num_ing = 0;
+    slowdown = 0;
+    times_ = 0;
+
+    b_angry = true;
+}
+
 bool Thr_Angry::LoadImg(std::string path, SDL_Renderer* screen)
 {
     bool ret = BaseOJ::LoadImg(path, screen);

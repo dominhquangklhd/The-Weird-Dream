@@ -21,6 +21,9 @@ public:
     bool is_started();
     bool is_paused();
 
+    int get_time(){return start_tick_;}
+
+
 private:
     int start_tick_;
     int paused_tick_;

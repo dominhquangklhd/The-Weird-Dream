@@ -25,6 +25,8 @@ public:
     int Get_num_occ(){return num_occurences_;}
     int Get_ice_status() {return ice_status_;}
 
+    void Reset_ice();
+
 private:
     SDL_Rect rectICE_;
 

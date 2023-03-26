@@ -15,9 +15,7 @@ const int WINDOW_HEIGHT = 600;
 const std::string WINDOW_TITLE = "The Weird Dream";
 const int SCREEN_BPP = 32;
 
-static SDL_Window* g_window = NULL;
-static SDL_Renderer* g_screen = NULL;
-static SDL_Event g_event;
+const int FRAME_PER_SECOND = 100;
 
 const int G_THR_IDLE = 0;
 const int G_THR_ATTACK = 1;
@@ -52,6 +50,16 @@ const int MENU_MUSIC = 4;
 
 const int xm_p = 500, ym_p = 250;
 const int xm_e = 500, ym_e = 400;
+const int xm_a = 450, ym_a = 350;
+const int xm_h = 700, ym_h = 350;
+const int num_lv3 = 30;
 
+const std::string m_play = "PLAY";
+const std::string m_exit = "EXIT";
+const std::string m_play2 = " XX ";
+const std::string m_exit2 = " @@ ";
+const std::string highest_score = "Best: ";
+const std::string help1 = "Press 't' to ATTACK";
+const std::string help2 = "Press 'SPACE' to JUMP";
 
 #endif // COMMON_FUNTION_H_INCLUDED

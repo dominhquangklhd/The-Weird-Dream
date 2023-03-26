@@ -382,7 +382,7 @@ void MainObject::HandleInputAction(SDL_Event events)
                 {
                 if (rectC_.y == ON_THE_GROUND_Y && fAttack_ == 0 && status_ != DEAD)
                     {
-                    //Mix_PlayMusic(music_jump, 1);
+                    if (chunk_jump == NULL) std::cout << "can't load chunkjump" << std::endl;
                     Mix_PlayChannel(JUMP_MUSIC, chunk_jump, 0);
                     status_ = JUMP;
                     jumping_ = true;
