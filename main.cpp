@@ -131,6 +131,7 @@ int main(int argv, char* args[])
     MenuGame m_lose;
     MenuGame m_again;
     MenuGame m_home;
+    MenuGame m_pause;
     MainObject p_player;
     ImgTimer t_timer;
     TextObject how_to_play1;
@@ -173,6 +174,7 @@ int main(int argv, char* args[])
     bool isrunning = true;
     bool play_game = true;
     bool b_wt_return = false;
+    bool b_main_pause = false;
 
     while (isrunning)
     {
@@ -182,7 +184,8 @@ int main(int argv, char* args[])
         isrunning = m_menu.Get_b_isrunning();
         play_game = m_menu.Get_b_play_game();
         b_menu = m_menu.Get_b_menu();
-        while  (SDL_PollEvent(&g_event))
+        //while (SDL_PollEvent(&g_event))
+        SDL_WaitEvent(&g_event);
         {
             if (g_event.type == SDL_QUIT) return 0;
             m_menu.HandleInputMenu(g_event, MenuGame::NOR);
@@ -230,10 +233,17 @@ int main(int argv, char* args[])
         NUM_ENEMY_APEAR = t_threat.Get_num_occ() + i_ice.Get_num_occ() + w_water.Get_num_occ();
         NUM_WI = i_ice.Get_num_occ() + w_water.Get_num_occ();
 
-        if (turn == 0) Mix_PlayChannel(THEME_MUSIC, chunk1, 0);
+        if (turn == 0) Mix_PlayChannel(THEME_MUSIC, chunk1, 5);
         if (turn == 0) turn++;
 
-        while  (SDL_PollEvent(&g_event))
+        g_background.Render(g_screen, NULL, SPEED_BG_1);
+        g_background2.Render(g_screen, NULL, SPEED_BG_2);
+        g_background3.Render(g_screen, NULL, SPEED_BG_3);
+        g_background4.Render(g_screen, NULL, SPEED_BG_4);
+        g_background5.Render(g_screen, NULL, SPEED_BG_5);
+        m_pause.LoadImgCommon("Menu//Pause1.png", g_screen, 0, 0, 50, 50);
+
+        if (SDL_PollEvent(&g_event))
         {
             if (g_event.type == SDL_QUIT)
             {
@@ -241,17 +251,14 @@ int main(int argv, char* args[])
                 play_game = false;
             }
             p_player.HandleInputAction(g_event);
+            m_pause.HandleInputMenu(g_event, MenuGame::PAUSE);
         }
+        if (m_pause.Get_n_pause() == MenuGame::S_IN) m_pause.LoadImgCommon("Menu//Pause2.png", g_screen, 0, 0, 50, 50);
 
-            g_background.Render(g_screen, NULL, SPEED_BG_1);
-            g_background2.Render(g_screen, NULL, SPEED_BG_2);
-            g_background3.Render(g_screen, NULL, SPEED_BG_3);
-            g_background4.Render(g_screen, NULL, SPEED_BG_4);
-            g_background5.Render(g_screen, NULL, SPEED_BG_5);
-//lv1
-///////////////////
             if (current_time >= 5)
             {
+//lv1
+///////////////////
                 if (t_threat.Get_num_occ() == 0) t_threat.Show(g_screen);
                 if (t_threat.Get_num_occ() == 1 && i_ice.Get_num_occ() == 0) i_ice.Show(g_screen);
                 if (i_ice.Get_num_occ() == 1 && w_water.Get_num_occ() == 0) w_water.Show(g_screen);
@@ -259,7 +266,6 @@ int main(int argv, char* args[])
                 if (i_ice.Get_num_occ() == 1 && w_water.Get_num_occ() == 1) i_ice.Show(g_screen);
                 if (w_water.Get_num_occ() == 1 && i_ice.Get_num_occ() == 2) w_water.Show(g_screen);
                 if (t_threat.Get_num_occ() == 1 && w_water.Get_num_occ() == 2) t_threat.Show(g_screen);
-
 ///////////////////
 //lv2
 ///////////////////////
@@ -342,10 +348,9 @@ int main(int argv, char* args[])
                 }
             }
 ////////////////////////
-
                 p_player.Show(g_screen);
                 g_background6.Render(g_screen, NULL, SPEED_BG_6);
-
+////////////////////////
 //thr_dead
             if (p_player.Get_status_Power() == true
                 && (p_player.Get_rectPW_().x + 63 >= t_threat.Get_rectThr_().x
@@ -409,11 +414,9 @@ int main(int argv, char* args[])
             {
                 xp += speed_text;
             }
-
             how_to_play1.SetText(help1);
             how_to_play1.LoadFromRenderText(htp, g_screen);
             how_to_play1.RenderText(g_screen, xp, 60);
-
             how_to_play2.SetText(help2);
             how_to_play2.LoadFromRenderText(htp, g_screen);
             how_to_play2.RenderText(g_screen, xp, 85);
@@ -423,6 +426,59 @@ int main(int argv, char* args[])
             m_menu.LoadImgBG("Menu//Main_Menu.png", g_screen);
             m_menu.MoveImg(g_screen);
             }
+//////////////////
+//////////Pause
+        while (m_pause.Get_b_pause() == true)
+        {
+            m_pause.LoadImgCommon("Menu//PauseMenu_BG.png", g_screen, 250, 0, 700, 600);
+            m_pause.LoadImgCommon("Menu//Continue1.png", g_screen, 400, 430, 100, 100);
+            m_pause.LoadImgCommon("Menu//Home1.png", g_screen, 660, 430, 100, 100);
+
+            SDL_WaitEvent(&g_event);
+            {
+                if (g_event.type == SDL_QUIT)
+                {
+                    return 0;
+                }
+                m_pause.HandleInputMenu(g_event, MenuGame::PAUSE);
+            }
+            isrunning = m_pause.Get_b_isrunning();
+            play_game = m_pause.Get_b_play_game();
+            b_menu = m_pause.Get_b_menu();
+
+            if (m_pause.Get_n_continue() == MenuGame::S_IN)
+            {
+                m_pause.LoadImgCommon("Menu//Continue2.png", g_screen, 400, 430, 100, 100);
+            }
+            if (m_pause.Get_b_continue() == false)
+            {
+                t_timer.paused();
+            }
+            else t_timer.unpaused();
+            if (m_pause.Get_n_home() == MenuGame::S_IN)
+            {
+                m_pause.LoadImgCommon("Menu//Home2.png", g_screen, 660, 430, 100, 100);
+            }
+            if (m_pause.Get_b_menu() == true && m_pause.Get_b_pause() == false)
+            {
+                xp = -1200;
+                b_char_dead = false;
+                b_text = true;
+                agree = true;
+                turn = 0;
+
+                Reset_all();
+                m_pause.Reset_menu();
+                m_menu.Reset_menu();
+                p_player.Reset_obj();
+                w_water.Reset_water();
+                i_ice.Reset_ice();
+                t_threat.Reset_threat();
+                t_timer.start();
+            }
+            SDL_RenderPresent(g_screen);
+        }
+////////////////
 //////play_again
             if (b_char_dead == true && p_player.Get_fDead() == 7 && p_player.Get_rectC_().y == ON_THE_GROUND_Y){
                 SDL_Delay(1000);
@@ -431,6 +487,7 @@ int main(int argv, char* args[])
                 b_char_dead = false;
                 b_wt_return = true;
                 b_text = true;
+                agree = true;
                 turn = 0;
 
                 Reset_all();
@@ -468,6 +525,7 @@ int main(int argv, char* args[])
                     }
                     SDL_RenderPresent(g_screen);
                 }
+                m_pause.Reset_menu();
                 m_again.Reset_menu();
                 m_home.Reset_menu();
                 t_timer.start();

@@ -18,16 +18,19 @@ void MenuGame::Reset_menu()
     menu_exit = Mix_LoadWAV("Music Game//MI_SFX 09.wav");
     menu_exit2 = Mix_LoadWAV("Music Game//MI_SFX 31.wav");
 
-    play_ = 1;
-    exit_ = 1;
-    again_ = 1;
-    home_ = 1;
+    play_ = S_OUT;
+    home_ = S_OUT;
+    exit_ = S_OUT;
+    again_ = S_OUT;
+    pause_ = S_OUT;
+    continue_ = S_OUT;
 
     isrunning_ = true;
     play_game_ = true;
     b_menu_ = true;
     wt_return_ = true;
-
+    b_pause_ = false;
+    b_continue_ = false;
 }
 
 bool MenuGame::LoadImgBG(std::string path, SDL_Renderer* screenBG)
@@ -82,19 +85,19 @@ void MenuGame::HandleInputMenu(SDL_Event m_event, int typem)
                 if (m_event.motion.x <= xm_p + 250 && m_event.motion.x >= xm_p
                     && m_event.motion.y >= ym_p && m_event.motion.y <= ym_p + 55)
                     {
-                        play_ = 2;
+                        play_ = S_IN;
                     }else
                     {
-                        play_ = 1;
+                        play_ = S_OUT;
                     }
 
                 if (m_event.motion.x <= xm_e + 250 && m_event.motion.x >= xm_e
                     && m_event.motion.y >= ym_e && m_event.motion.y <= ym_e + 55)
                     {
-                    exit_ = 2;
+                    exit_ = S_IN;
                     }else
                     {
-                    exit_ = 1;
+                    exit_ = S_OUT;
                     }
                 }
                 else if (typem == LOSE)
@@ -102,34 +105,78 @@ void MenuGame::HandleInputMenu(SDL_Event m_event, int typem)
                     if (m_event.motion.x <= xm_a + 100 && m_event.motion.x >= xm_a
                     && m_event.motion.y >= ym_a && m_event.motion.y <= ym_a + 100)
                     {
-                        again_ = 2;
+                        again_ = S_IN;
                     }else
                     {
-                        again_ = 1;
+                        again_ = S_OUT;
                     }
 
                     if (m_event.motion.x <= xm_h + 100 && m_event.motion.x >= xm_h
                     && m_event.motion.y >= ym_h && m_event.motion.y <= ym_h + 100)
                     {
-                        home_ = 2;
+                        home_ = S_IN;
                     }else
                     {
-                        home_ = 1;
+                        home_ = S_OUT;
                     }
                 }
-
+                else if (typem == PAUSE)
+                {
+                    if (m_event.motion.x <= 50 && m_event.motion.x >= 0
+                    && m_event.motion.y >= 0 && m_event.motion.y <= 50)
+                    {
+                        pause_ = S_IN;
+                    }else
+                    {
+                        pause_ = S_OUT;
+                    }
+                    if (m_event.motion.x <= 400 + 100 && m_event.motion.x >= 400
+                    && m_event.motion.y >= 430 && m_event.motion.y <= 430 + 100)
+                    {
+                        continue_ = S_IN;
+                    }else
+                    {
+                        b_continue_ = false;
+                        continue_ = S_OUT;
+                    }
+                    if (m_event.motion.x <= 660 + 100 && m_event.motion.x >= 660
+                    && m_event.motion.y >= 430 && m_event.motion.y <= 430 + 100)
+                    {
+                        home_ = S_IN;
+                    }else
+                    {
+                        home_ = S_OUT;
+                    }
+                }
+            }
+            break;
+        case SDL_KEYDOWN:
+            {
+                if (m_event.key.keysym.sym == SDLK_p)
+                {
+                    pause_ = S_IN;
+                    b_pause_ = true;
+                }
+            }
+            break;
+        case SDL_KEYUP:
+            {
+                if (m_event.key.keysym.sym == SDLK_p)
+                {
+                    pause_ = S_OUT;
+                }
             }
             break;
         case SDL_MOUSEBUTTONDOWN:
             {
                 if (typem == NOR){
-                    if (play_ == 2)
+                    if (play_ == S_IN)
                     {
                     Mix_PlayChannel(MENU_MUSIC, menu_play2, 0);
                     isrunning_ = true;
                     b_menu_ = false;
                     }
-                    if (exit_ == 2)
+                    if (exit_ == S_IN)
                     {
                     Mix_PlayChannel(MENU_MUSIC, menu_exit2, 0);
                     isrunning_ = false;
@@ -139,19 +186,38 @@ void MenuGame::HandleInputMenu(SDL_Event m_event, int typem)
                     }
                 }
                 if (typem == LOSE){
-                    if (again_ == 2)
+                    if (again_ == S_IN)
                     {
                         b_menu_ = false;
                         isrunning_ = true;
                         play_game_ = true;
                         wt_return_ = false;
                     }
-                    if (home_ == 2)
+                    if (home_ == S_IN)
                     {
                         b_menu_ = true;
                         isrunning_ = true;
                         play_game_ = false;
                         wt_return_ = false;
+                    }
+                }
+                if (typem == PAUSE){
+                    if (pause_ == S_IN)
+                    {
+                    b_pause_ = true;
+                    }
+                    if (home_ == S_IN)
+                    {
+                        b_pause_ = false;
+                        b_menu_ = true;
+                        isrunning_ = true;
+                        play_game_ = false;
+                    }
+                    if (continue_ == S_IN)
+                    {
+                        b_continue_ = true;
+                        b_pause_ = false;
+                        b_menu_ = false;
                     }
                 }
             }

@@ -141,7 +141,6 @@ void Threats::Show(SDL_Renderer* des)
          thrAttack_ = 0;
          Thr_status_ = THR_IDLE;
          thr_bool_attack_ = false;
-//         rectThr_.x =
     }
     }
 

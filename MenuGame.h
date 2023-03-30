@@ -14,6 +14,7 @@ public:
     enum TYPE_MENU
     {
         NOR = 0, LOSE = 1, PAUSE = 2, SOUND = 3, INFOR = 4,
+        S_IN = 2, S_OUT = 1,
     };
 
     bool LoadImgBG(std::string path, SDL_Renderer* screenBG);
@@ -27,15 +28,15 @@ public:
     int Get_n_exit(){return exit_;}
     int Get_n_again(){return again_;}
     int Get_n_home(){return home_;}
+    int Get_n_pause(){return pause_;}
+    int Get_n_continue(){return continue_;}
 
     bool Get_b_isrunning(){return isrunning_;}
     bool Get_b_play_game(){return play_game_;}
     bool Get_b_menu(){return b_menu_;}
     bool Get_b_wt_return(){return wt_return_;}
-
-    bool Change_b_isrunning(bool change_isrunning_){isrunning_ = change_isrunning_; return isrunning_;}
-    bool Change_b_playgame(bool change_playgame_){play_game_ = change_playgame_; return play_game_;}
-    bool Change_b_menu(bool change_menu_){b_menu_ = change_menu_; return b_menu_;}
+    bool Get_b_pause(){return b_pause_;}
+    bool Get_b_continue(){return b_continue_;}
 
     void Reset_menu();
 
@@ -53,11 +54,15 @@ private:
     int exit_ = 1;
     int again_ = 1;
     int home_ = 1;
+    int pause_ = 1;
+    int continue_ = 1;
 
     bool isrunning_ = true;
     bool play_game_ = true;
     bool b_menu_ = true;
     bool wt_return_ = true;
+    bool b_pause_ = false;
+    bool b_continue_ = false;
 
     int type_menu = 0;
 
