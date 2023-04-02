@@ -36,6 +36,10 @@ public:
     void SetText(const std::string& text) {str_val_ = text;}
     std::string GetText() {return str_val_;}
 
+    std::string GetHighScoreFromFile(std::string path);
+    void UpdateHighScore(std::string path,
+                        const int& score,
+                        const std::string& old_high_score);
 
 private:
     std::string str_val_;

@@ -224,6 +224,7 @@ int main(int argv, char* args[])
         t_timer.start();
 //////////////////
         while (play_game == true){
+        std::string num_highestscore = your_best.GetHighScoreFromFile("highest_score.txt");
 
         frameStart = SDL_GetTicks();
         int score = t_timer.get_ticks()/100;
@@ -386,7 +387,7 @@ int main(int argv, char* args[])
         {
             SDL_Delay(frameDelay - frameTime);
         }
-/////////////////////////
+/////////////////////////your_score
         std::string str_val = std::to_string(score);
         your_score.SetText(str_val);
         your_score.LoadFromRenderText(font_score, g_screen);
@@ -398,9 +399,14 @@ int main(int argv, char* args[])
         if (score >= 10000 && score < 100000) your_score.RenderText(g_screen, WINDOW_WIDTH - 150, 15);
         if (score >= 100000) your_score.RenderText(g_screen, WINDOW_WIDTH - 180, 15);
 
+////////////highest_score
         your_best.SetText(highest_score);
         your_best.LoadFromRenderText(font_score, g_screen);
         your_best.RenderText(g_screen, WINDOW_WIDTH/2 - 150, 15);
+
+        your_best.SetText(num_highestscore);
+        your_best.LoadFromRenderText(font_score, g_screen);
+        your_best.RenderText(g_screen, WINDOW_WIDTH/2, 15);
 
         if (xp <= WINDOW_WIDTH)
         {
@@ -479,10 +485,11 @@ int main(int argv, char* args[])
             SDL_RenderPresent(g_screen);
         }
 ////////////////
-//////play_again
+//////play_again(player_death)
             if (b_char_dead == true && p_player.Get_fDead() == 7 && p_player.Get_rectC_().y == ON_THE_GROUND_Y){
                 SDL_Delay(1000);
 
+                your_best.UpdateHighScore("highest_score.txt", score, num_highestscore);
                 xp = -1200;
                 b_char_dead = false;
                 b_wt_return = true;

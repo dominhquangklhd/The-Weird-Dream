@@ -82,3 +82,35 @@ void TextObject::RenderText(SDL_Renderer* screen,
     }
     SDL_RenderCopyEx(screen, texture_, clip, &renderquad, angle, center, flip);
 }
+
+std::string TextObject::GetHighScoreFromFile(std::string path)
+{
+	std::fstream HighScoreFile;
+	std::string highscore;
+
+	HighScoreFile.open(path, std::ios::in);
+	HighScoreFile >> highscore;
+
+	return highscore;
+}
+
+void TextObject::UpdateHighScore(std::string path,
+                                const int& score,
+                                const std::string& old_high_score)
+{
+	int oldHighScore = 0;
+	std::fstream HighScoreFile;
+	std::string newHighScore;
+	std::stringstream ConvertToInt(old_high_score);
+
+	HighScoreFile.open(path, std::ios::out);
+
+	ConvertToInt >> oldHighScore;
+	if (score > oldHighScore)
+	{
+		oldHighScore = score;
+	}
+	newHighScore = std::to_string(oldHighScore);
+
+	HighScoreFile << newHighScore;
+}
