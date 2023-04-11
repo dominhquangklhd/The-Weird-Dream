@@ -15,7 +15,7 @@ const int WINDOW_HEIGHT = 600;
 const std::string WINDOW_TITLE = "The Weird Dream";
 const int SCREEN_BPP = 32;
 
-const int FRAME_PER_SECOND = 80;
+const int FRAME_PER_SECOND = 100;
 
 const int G_THR_IDLE = 0;
 const int G_THR_ATTACK = 1;
