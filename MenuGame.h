@@ -53,9 +53,7 @@ private:
 
     int menu_width, menu_height;
 
-    Mix_Chunk* menu_play = Mix_LoadWAV("Music Game//MI_SFX 09.wav");
     Mix_Chunk* menu_play2 = Mix_LoadWAV("Music Game//MI_SFX 44.wav");
-    Mix_Chunk* menu_exit = Mix_LoadWAV("Music Game//MI_SFX 09.wav");
     Mix_Chunk* menu_exit2 = Mix_LoadWAV("Music Game//MI_SFX 31.wav");
 
     int play_ = 1;

@@ -32,6 +32,8 @@ public:
     bool Get_status_Power() {return power_;}
     int Get_fDead() {return fDead_;}
 
+    bool Change_b_loadmusic(bool change){b_load_music = change;}
+
     void Reset_obj();
 
 private:
@@ -51,6 +53,8 @@ private:
     Mix_Music* music_jump = Mix_LoadMUS("Music Game//Jump_005.wav");
     Mix_Chunk* chunk_jump = Mix_LoadWAV("Music Game//Jump_005.wav");
     Mix_Chunk* chunk_attack = Mix_LoadWAV("Music Game//Explosion_003.wav");
+
+    bool b_load_music = true;
 
     float x_pos_;
 

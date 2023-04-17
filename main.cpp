@@ -175,7 +175,7 @@ int main(int argv, char* args[])
     bool b_wt_return = false;
     bool b_main_pause = false;
     bool b_music_character = true;
-    bool b_music_game = true;
+    bool b_music_theme = true;
 
     while (isrunning)
     {
@@ -223,6 +223,9 @@ int main(int argv, char* args[])
             if (m_menu.Get_b_vol_2() == false && m_menu.Get_n_vol_2x() == MenuGame::S_IN) m_audio.LoadImgCommon("Menu//Un_sound2.png", g_screen, 170, 190, 50, 50);
             SDL_RenderPresent(g_screen);
         }
+        b_music_character = m_menu.Get_b_vol_1();
+        b_music_theme = m_menu.Get_b_vol_2();
+        p_player.Change_b_loadmusic(b_music_character);
 ///////////
         if (m_menu.Get_n_play() == 1){
         text_menu_play.SetText(m_play);
@@ -262,7 +265,7 @@ int main(int argv, char* args[])
         NUM_ENEMY_APEAR = t_threat.Get_num_occ() + i_ice.Get_num_occ() + w_water.Get_num_occ();
         NUM_WI = i_ice.Get_num_occ() + w_water.Get_num_occ();
 
-        if (turn == 0) Mix_PlayChannel(THEME_MUSIC, chunk1, 1);
+        if (turn == 0 && b_music_theme == true) Mix_PlayChannel(THEME_MUSIC, chunk1, 1);
         if (turn == 0) turn++;
 
         g_background.Render(g_screen, NULL, SPEED_BG_1);
@@ -352,13 +355,13 @@ int main(int argv, char* args[])
 ///////////////////////////
                 if (NUM_ENEMY_APEAR == num_lv3 && a_angry.Get_bool_angry() == true)
                 {
-                    if (turn == 1) Mix_PlayChannel(THEME_MUSIC, chunk_angry, 7);
+                    if (turn == 1 && b_music_theme == true) Mix_PlayChannel(THEME_MUSIC, chunk_angry, 7);
                     if (turn == 1) turn++;
                     a_angry.Show(g_screen);
                 }
                 if (NUM_ENEMY_APEAR >= num_lv3 && a_angry.Get_bool_angry() == false)
                 {
-                    if (turn == 2) Mix_PlayChannel(THEME_MUSIC, chunk2, 8);
+                    if (turn == 2 && b_music_theme == true) Mix_PlayChannel(THEME_MUSIC, chunk2, 8);
                     if (turn == 2) turn++;
 
                     if (ene_type_lv3 == ENEMY_TYPE_1)

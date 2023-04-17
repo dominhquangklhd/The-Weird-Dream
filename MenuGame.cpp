@@ -13,9 +13,7 @@ void MenuGame::Reset_menu()
     m_rect.x = 0;
     m_rect.y = 0;
 
-    menu_play = Mix_LoadWAV("Music Game//MI_SFX 09.wav");
     menu_play2 = Mix_LoadWAV("Music Game//MI_SFX 44.wav");
-    menu_exit = Mix_LoadWAV("Music Game//MI_SFX 09.wav");
     menu_exit2 = Mix_LoadWAV("Music Game//MI_SFX 31.wav");
 
     play_ = S_OUT;
@@ -220,7 +218,7 @@ void MenuGame::HandleInputMenu(SDL_Event m_event, int typem)
                 if (typem == NOR){
                     if (play_ == S_IN)
                     {
-                    Mix_PlayChannel(MENU_MUSIC, menu_play2, 0);
+                    if (b_vol_2 == true) Mix_PlayChannel(MENU_MUSIC, menu_play2, 0);
                     isrunning_ = true;
                     b_menu_ = false;
                     }
@@ -230,7 +228,7 @@ void MenuGame::HandleInputMenu(SDL_Event m_event, int typem)
                     }
                     if (exit_ == S_IN)
                     {
-                    Mix_PlayChannel(MENU_MUSIC, menu_exit2, 0);
+                    if (b_vol_2 == true) Mix_PlayChannel(MENU_MUSIC, menu_exit2, 0);
                     isrunning_ = false;
                     b_menu_ = false;
                     play_game_ = false;
