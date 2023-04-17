@@ -13,7 +13,7 @@ public:
 
     enum TYPE_MENU
     {
-        NOR = 0, LOSE = 1, PAUSE = 2, SOUND = 3, INFOR = 4,
+        SETTING = -1, NOR = 0, LOSE = 1, PAUSE = 2, SOUND = 3, INFOR = 4,
         S_IN = 2, S_OUT = 1,
     };
 
@@ -30,6 +30,11 @@ public:
     int Get_n_home(){return home_;}
     int Get_n_pause(){return pause_;}
     int Get_n_continue(){return continue_;}
+    int Get_n_setting() {return setting_;}
+    int Get_n_vol_1(){return vol_1;}
+    int Get_n_vol_2(){return vol_2;}
+    int Get_n_vol_2x(){return vol_2x;}
+    int Get_n_vol_1x(){return vol_1x;}
 
     bool Get_b_isrunning(){return isrunning_;}
     bool Get_b_play_game(){return play_game_;}
@@ -37,6 +42,9 @@ public:
     bool Get_b_wt_return(){return wt_return_;}
     bool Get_b_pause(){return b_pause_;}
     bool Get_b_continue(){return b_continue_;}
+    bool Get_b_setting() {return b_setting_;}
+    bool Get_b_vol_1(){return b_vol_1;}
+    bool Get_b_vol_2(){return b_vol_2;}
 
     void Reset_menu();
 
@@ -56,6 +64,11 @@ private:
     int home_ = 1;
     int pause_ = 1;
     int continue_ = 1;
+    int setting_ = 1;
+    int vol_1 = 1;
+    int vol_2 = 1;
+    int vol_1x = 1;
+    int vol_2x = 1;
 
     bool isrunning_ = true;
     bool play_game_ = true;
@@ -63,6 +76,9 @@ private:
     bool wt_return_ = true;
     bool b_pause_ = false;
     bool b_continue_ = false;
+    bool b_setting_ = false;
+    bool b_vol_1 = true;
+    bool b_vol_2 = true;
 
     int type_menu = 0;
 

@@ -40,6 +40,8 @@ public:
     void UpdateHighScore(std::string path,
                         const int& score,
                         const std::string& old_high_score);
+    bool Get_b_newhs(){return b_newhs;}
+    bool Change_b_newhs(bool b_change){b_newhs = b_change;}
 
 private:
     std::string str_val_;
@@ -47,7 +49,7 @@ private:
     SDL_Texture* texture_;
     int width_;
     int height_;
-
+    bool b_newhs = false;
 };
 
 #endif // TEXTOBJECT_H_INCLUDED

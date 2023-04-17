@@ -109,6 +109,7 @@ void TextObject::UpdateHighScore(std::string path,
 	if (score > oldHighScore)
 	{
 		oldHighScore = score;
+		b_newhs = true;
 	}
 	newHighScore = std::to_string(oldHighScore);
 

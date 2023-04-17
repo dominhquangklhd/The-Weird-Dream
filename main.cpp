@@ -130,6 +130,7 @@ int main(int argv, char* args[])
     MenuGame m_again;
     MenuGame m_home;
     MenuGame m_pause;
+    MenuGame m_audio;
     MainObject p_player;
     ImgTimer t_timer;
     TextObject how_to_play1;
@@ -173,6 +174,8 @@ int main(int argv, char* args[])
     bool play_game = true;
     bool b_wt_return = false;
     bool b_main_pause = false;
+    bool b_music_character = true;
+    bool b_music_game = true;
 
     while (isrunning)
     {
@@ -195,6 +198,32 @@ int main(int argv, char* args[])
         out_side_p.LoadImgOutSide("Menu//khung3.png", g_screen, xm_p - 30, ym_p - 75);
         out_side_p.LoadImgOutSide("Menu//khung3.png", g_screen, xm_e - 30, ym_e - 75);
 
+        if (m_menu.Get_n_setting() == MenuGame::S_OUT) m_menu.LoadImgCommon("Menu//Setting1.png", g_screen, 0, 0, 50, 50);
+        else m_menu.LoadImgCommon("Menu//Setting2.png", g_screen, 0, 0, 50, 50);
+////////setting
+        while (m_menu.Get_b_setting() == true)
+        {
+            m_audio.LoadImgCommon("Menu//audio.png", g_screen, 25, 50, 0, 0);
+            text_menu_play.SetText(Theme_s);
+            text_menu_play.LoadFromRenderText(htp, g_screen);
+            text_menu_play.RenderText(g_screen, 50, 210);
+            SDL_WaitEvent(&g_event);
+            {
+                if (g_event.type == SDL_QUIT) return 0;
+                m_menu.HandleInputMenu(g_event, MenuGame::SETTING);
+            }
+            if (m_menu.Get_b_vol_1() == true && m_menu.Get_n_vol_1() == MenuGame::S_OUT) m_audio.LoadImgCommon("Menu//Sound1.png", g_screen, 170, 100, 50, 50);
+            if (m_menu.Get_b_vol_1() == true && m_menu.Get_n_vol_1() == MenuGame::S_IN) m_audio.LoadImgCommon("Menu//Sound2.png", g_screen, 170, 100, 50, 50);
+            if (m_menu.Get_b_vol_1() == false && m_menu.Get_n_vol_1x() == MenuGame::S_OUT) m_audio.LoadImgCommon("Menu//Un_sound1.png", g_screen, 170, 100, 50, 50);
+            if (m_menu.Get_b_vol_1() == false && m_menu.Get_n_vol_1x() == MenuGame::S_IN) m_audio.LoadImgCommon("Menu//Un_sound2.png", g_screen, 170, 100, 50, 50);
+
+            if (m_menu.Get_b_vol_2() == true && m_menu.Get_n_vol_2() == MenuGame::S_OUT) m_audio.LoadImgCommon("Menu//Sound1.png", g_screen, 170, 190, 50, 50);
+            if (m_menu.Get_b_vol_2() == true && m_menu.Get_n_vol_2() == MenuGame::S_IN) m_audio.LoadImgCommon("Menu//Sound2.png", g_screen, 170, 190, 50, 50);
+            if (m_menu.Get_b_vol_2() == false && m_menu.Get_n_vol_2x() == MenuGame::S_OUT) m_audio.LoadImgCommon("Menu//Un_sound1.png", g_screen, 170, 190, 50, 50);
+            if (m_menu.Get_b_vol_2() == false && m_menu.Get_n_vol_2x() == MenuGame::S_IN) m_audio.LoadImgCommon("Menu//Un_sound2.png", g_screen, 170, 190, 50, 50);
+            SDL_RenderPresent(g_screen);
+        }
+///////////
         if (m_menu.Get_n_play() == 1){
         text_menu_play.SetText(m_play);
         text_menu_play.LoadFromRenderText(gf_menu, g_screen);
@@ -223,6 +252,7 @@ int main(int argv, char* args[])
 //////////////////
         while (play_game == true){
         std::string num_highestscore = your_best.GetHighScoreFromFile("highest_score.txt");
+        your_best.SetColor(TextObject::BROWN_TEXT);
 
         frameStart = SDL_GetTicks();
         int score = t_timer.get_ticks()/100;
@@ -488,6 +518,7 @@ int main(int argv, char* args[])
                 SDL_Delay(1000);
 
                 your_best.UpdateHighScore("highest_score.txt", score, num_highestscore);
+                num_highestscore = your_best.GetHighScoreFromFile("highest_score.txt");
                 xp = -1200;
                 b_char_dead = false;
                 b_wt_return = true;
@@ -501,8 +532,10 @@ int main(int argv, char* args[])
                 w_water.Reset_water();
                 i_ice.Reset_ice();
                 t_threat.Reset_threat();
+                int tmp = 0, real = 0;
                 while (b_wt_return == true)
                 {
+                    tmp++;
                     m_lose.LoadImgCommon("Menu//Want_to_return.png", g_screen, 218, 20, 0, 0);
                     m_lose.Show(g_screen);
                     m_again.LoadImgCommon("Menu//Again1.png", g_screen, xm_a, ym_a, 100, 100);
@@ -510,6 +543,15 @@ int main(int argv, char* args[])
                     m_home.LoadImgCommon("Menu//Home1.png", g_screen, xm_h, ym_h, 100, 100);
                     m_home.Show(g_screen);
 
+                    if (your_best.Get_b_newhs() == true)
+                    {
+                        if (tmp%20 == 0) real++;
+                        if (real%2 == 0) your_best.SetColor(0);
+                        else your_best.SetColor(2);
+                        your_best.SetText(newhs + num_highestscore);
+                        your_best.LoadFromRenderText(gf_menu, g_screen);
+                        your_best.RenderText(g_screen, WINDOW_WIDTH/2 - 210, 80);
+                    }
                     while (SDL_PollEvent(&g_event)){
                     m_again.HandleInputMenu(g_event, MenuGame::LOSE);
                     m_home.HandleInputMenu(g_event, MenuGame::LOSE);
@@ -530,6 +572,7 @@ int main(int argv, char* args[])
                     }
                     SDL_RenderPresent(g_screen);
                 }
+                your_best.Change_b_newhs(false);
                 m_pause.Reset_menu();
                 m_again.Reset_menu();
                 m_home.Reset_menu();

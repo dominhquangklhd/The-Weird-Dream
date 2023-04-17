@@ -63,5 +63,7 @@ const std::string m_exit2 = " @@ ";
 const std::string highest_score = "Best: ";
 const std::string help1 = "Press 't' to ATTACK";
 const std::string help2 = "Press 'SPACE' to JUMP";
+const std::string newhs = "New ";
+const std::string Theme_s = "Theme";
 
 #endif // COMMON_FUNTION_H_INCLUDED

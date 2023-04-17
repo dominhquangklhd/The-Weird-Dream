@@ -24,6 +24,11 @@ void MenuGame::Reset_menu()
     again_ = S_OUT;
     pause_ = S_OUT;
     continue_ = S_OUT;
+    setting_ = S_OUT;
+    vol_1 = S_OUT;
+    vol_2 = S_OUT;
+    vol_1x = S_OUT;
+    vol_2x = S_OUT;
 
     isrunning_ = true;
     play_game_ = true;
@@ -31,6 +36,7 @@ void MenuGame::Reset_menu()
     wt_return_ = true;
     b_pause_ = false;
     b_continue_ = false;
+    b_setting_ = false;
 }
 
 bool MenuGame::LoadImgBG(std::string path, SDL_Renderer* screenBG)
@@ -90,7 +96,6 @@ void MenuGame::HandleInputMenu(SDL_Event m_event, int typem)
                     {
                         play_ = S_OUT;
                     }
-
                 if (m_event.motion.x <= xm_e + 250 && m_event.motion.x >= xm_e
                     && m_event.motion.y >= ym_e && m_event.motion.y <= ym_e + 55)
                     {
@@ -99,8 +104,51 @@ void MenuGame::HandleInputMenu(SDL_Event m_event, int typem)
                     {
                     exit_ = S_OUT;
                     }
+                if (m_event.motion.x <= 50 && m_event.motion.x >= 0
+                    && m_event.motion.y >= 0 && m_event.motion.y <= 50)
+                    {
+                        setting_ = S_IN;
+                    }else
+                    {
+                        setting_ = S_OUT;
+                    }
                 }
-                else if (typem == LOSE)
+            else if (typem == SETTING)
+            {
+                if (b_vol_1 == true && (m_event.motion.x <= 170+50 && m_event.motion.x >= 170
+                    && m_event.motion.y >= 100 && m_event.motion.y <= 100+50))
+                    {
+                        vol_1 = S_IN;
+                    }else
+                    {
+                        vol_1 = S_OUT;
+                    }
+                if (b_vol_2 == true && (m_event.motion.x <= 170+50 && m_event.motion.x >= 170
+                    && m_event.motion.y >= 190 && m_event.motion.y <= 190+50))
+                    {
+                        vol_2 = S_IN;
+                    }else
+                    {
+                        vol_2 = S_OUT;
+                    }
+                if (b_vol_1 == false && (m_event.motion.x <= 170+50 && m_event.motion.x >= 170
+                    && m_event.motion.y >= 100 && m_event.motion.y <= 100+50))
+                    {
+                        vol_1x = S_IN;
+                    }else
+                    {
+                        vol_1x = S_OUT;
+                    }
+                if (b_vol_2 == false && (m_event.motion.x <= 170+50 && m_event.motion.x >= 170
+                    && m_event.motion.y >= 190 && m_event.motion.y <= 190+50))
+                    {
+                        vol_2x = S_IN;
+                    }else
+                    {
+                        vol_2x = S_OUT;
+                    }
+            }
+            else if (typem == LOSE)
                 {
                     if (m_event.motion.x <= xm_a + 100 && m_event.motion.x >= xm_a
                     && m_event.motion.y >= ym_a && m_event.motion.y <= ym_a + 100)
@@ -120,7 +168,7 @@ void MenuGame::HandleInputMenu(SDL_Event m_event, int typem)
                         home_ = S_OUT;
                     }
                 }
-                else if (typem == PAUSE)
+            else if (typem == PAUSE)
                 {
                     if (m_event.motion.x <= 50 && m_event.motion.x >= 0
                     && m_event.motion.y >= 0 && m_event.motion.y <= 50)
@@ -176,6 +224,10 @@ void MenuGame::HandleInputMenu(SDL_Event m_event, int typem)
                     isrunning_ = true;
                     b_menu_ = false;
                     }
+                    if (setting_ == S_IN)
+                    {
+                        b_setting_ = true;
+                    }
                     if (exit_ == S_IN)
                     {
                     Mix_PlayChannel(MENU_MUSIC, menu_exit2, 0);
@@ -183,6 +235,18 @@ void MenuGame::HandleInputMenu(SDL_Event m_event, int typem)
                     b_menu_ = false;
                     play_game_ = false;
                     SDL_Delay(300);
+                    }
+                }
+                if (typem == SETTING)
+                {
+                    if (vol_1 == S_IN && b_vol_1 == true) b_vol_1 = false;
+                    if (vol_1x == S_IN && b_vol_1 == false) b_vol_1 = true;
+                    if (vol_2 == S_IN && b_vol_2 == true) b_vol_2 = false;
+                    if (vol_2x == S_IN && b_vol_2 == false) b_vol_2 = true;
+                    if (vol_1 == S_OUT && vol_1x == S_OUT && vol_2 == S_OUT && vol_2x == S_OUT)
+                    {
+                        setting_ = S_OUT;
+                        b_setting_ = false;
                     }
                 }
                 if (typem == LOSE){
@@ -224,5 +288,3 @@ void MenuGame::HandleInputMenu(SDL_Event m_event, int typem)
             break;
             }
 }
-
-
