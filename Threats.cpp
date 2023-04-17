@@ -6,39 +6,8 @@ void Threats::Show(SDL_Renderer* des)
 //IDLE
     if (Thr_status_ == THR_IDLE)
     {
-        switch (threat_)
-        {
-        case 0:
-            {
-            LoadImg("Threats//idle_1.png", des);
-            }
-            break;
-        case 1:
-            {
-            LoadImg("Threats//idle_2.png", des);
-            }
-            break;
-        case 2:
-            {
-            LoadImg("Threats//idle_3.png", des);
-            }
-            break;
-        case 3:
-            {
-            LoadImg("Threats//idle_4.png", des);
-            }
-            break;
-        case 4:
-            {
-            LoadImg("Threats//idle_5.png", des);
-            }
-            break;
-        case 5:
-            {
-            LoadImg("Threats//idle_6.png", des);
-            }
-            break;
-        }
+
+    LoadImg(link_idle[threat_], des);
 
     rectThr_.x -= SPEED_BG_5;
     rectThr_.y = GROUND - height_threat_ - 50 + 40;
@@ -76,44 +45,8 @@ void Threats::Show(SDL_Renderer* des)
 
     if (Thr_status_ == THR_ATTACK)
     {
-        switch (thrAttack_)
-        {
-        case 0:
-            {
-            LoadImg("Threats//1_atk_1.png", des);
-            }
-            break;
-        case 1:
-            {
-            LoadImg("Threats//1_atk_2.png", des);
-            }
-            break;
-        case 2:
-            {
-            LoadImg("Threats//1_atk_3.png", des);
-            }
-            break;
-        case 3:
-            {
-            LoadImg("Threats//1_atk_4.png", des);
-            }
-            break;
-        case 4:
-            {
-            LoadImg("Threats//1_atk_5.png", des);
-            }
-            break;
-        case 5:
-            {
-            LoadImg("Threats//1_atk_6.png", des);
-            }
-            break;
-        case 6:
-            {
-            LoadImg("Threats//1_atk_7.png", des);
-            }
-            break;
-        }
+
+    LoadImg(link_attack[thrAttack_], des);
 
     rectThr_.x -= SPEED_BG_5;
 
@@ -148,89 +81,8 @@ void Threats::Show(SDL_Renderer* des)
 //th_dead
     if (Thr_status_ == THR_DEAD)
     {
-        switch (thrDead_)
-        {
-        case 0:
-            {
-            LoadImg("Threats//death_1.png", des);
-            }
-            break;
-        case 1:
-            {
-            LoadImg("Threats//death_2.png", des);
-            }
-            break;
-        case 2:
-            {
-            LoadImg("Threats//death_3.png", des);
-            }
-            break;
-        case 3:
-            {
-            LoadImg("Threats//death_4.png", des);
-            }
-            break;
-        case 4:
-            {
-            LoadImg("Threats//death_5.png", des);
-            }
-            break;
-        case 5:
-            {
-            LoadImg("Threats//death_6.png", des);
-            }
-            break;
-        case 6:
-            {
-            LoadImg("Threats//death_7.png", des);
-            }
-            break;
-        case 7:
-            {
-            LoadImg("Threats//death_8.png", des);
-            }
-            break;
-        case 8:
-            {
-            LoadImg("Threats//death_9.png", des);
-            }
-            break;
-        case 9:
-            {
-            LoadImg("Threats//death_10.png", des);
-            }
-            break;
-        case 10:
-            {
-            LoadImg("Threats//death_11.png", des);
-            }
-            break;
-        case 11:
-            {
-            LoadImg("Threats//death_12.png", des);
-            }
-            break;
-        case 12:
-            {
-            LoadImg("Threats//death_13.png", des);
-            }
-            break;
-        case 13:
-            {
-            LoadImg("Threats//death_14.png", des);
-            }
-            break;
-        case 14:
-            {
-            LoadImg("Threats//death_15.png", des);
-            }
-            break;
-        case 15:
-            {
-            LoadImg("Threats//death_16.png", des);
-            }
-            break;
-        }
+
+    LoadImg(link_death[thrDead_], des);
 
     rectThr_.x -= SPEED_BG_5;
 

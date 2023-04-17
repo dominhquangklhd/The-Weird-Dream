@@ -28,6 +28,12 @@ public:
     void Reset_ice();
 
 private:
+    std::string link_attack[10] = {"Ice Frames//VFX 1 Repeatable1.png", "Ice Frames//VFX 1 Repeatable2.png", "Ice Frames//VFX 1 Repeatable3.png",
+                                "Ice Frames//VFX 1 Repeatable4.png", "Ice Frames//VFX 1 Repeatable5.png", "Ice Frames//VFX 1 Repeatable6.png",
+                                "Ice Frames//VFX 1 Repeatable7.png", "Ice Frames//VFX 1 Repeatable8.png", "Ice Frames//VFX 1 Repeatable9.png", "Ice Frames//VFX 1 Repeatable10.png"};
+    std::string link_break[8] = {"Ice Frames//VFX 1 Hit1.png", "Ice Frames//VFX 1 Hit2.png", "Ice Frames//VFX 1 Hit3.png", "Ice Frames//VFX 1 Hit4.png",
+                                "Ice Frames//VFX 1 Hit5.png", "Ice Frames//VFX 1 Hit6.png", "Ice Frames//VFX 1 Hit7.png", "Ice Frames//VFX 1 Hit8.png"};
+
     SDL_Rect rectICE_;
 
     int frame_ice_, frame_break_;

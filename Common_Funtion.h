@@ -9,6 +9,8 @@
 #include <vector>
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
+#include <fstream>
+#include <sstream>
 
 const int WINDOW_WIDTH = 1260;
 const int WINDOW_HEIGHT = 600;
@@ -52,7 +54,7 @@ const int xm_p = 500, ym_p = 250;
 const int xm_e = 500, ym_e = 400;
 const int xm_a = 450, ym_a = 350;
 const int xm_h = 700, ym_h = 350;
-const int num_lv3 = 30;
+const int num_lv3 = 30; //>=6 && %2==0
 
 const std::string m_play = "PLAY";
 const std::string m_exit = "EXIT";

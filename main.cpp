@@ -41,8 +41,6 @@ Mix_Chunk* chunk2;
 Mix_Chunk* chunk_angry;
 Mix_Chunk* chunk1;
 
-
-
 void init()
 {
     SDL_Init(SDL_INIT_EVERYTHING);
@@ -234,7 +232,7 @@ int main(int argv, char* args[])
         NUM_ENEMY_APEAR = t_threat.Get_num_occ() + i_ice.Get_num_occ() + w_water.Get_num_occ();
         NUM_WI = i_ice.Get_num_occ() + w_water.Get_num_occ();
 
-        if (turn == 0) Mix_PlayChannel(THEME_MUSIC, chunk1, 5);
+        if (turn == 0) Mix_PlayChannel(THEME_MUSIC, chunk1, 1);
         if (turn == 0) turn++;
 
         g_background.Render(g_screen, NULL, SPEED_BG_1);
@@ -407,7 +405,7 @@ int main(int argv, char* args[])
         your_best.SetText(num_highestscore);
         your_best.LoadFromRenderText(font_score, g_screen);
         your_best.RenderText(g_screen, WINDOW_WIDTH/2, 15);
-
+////////////
         if (xp <= WINDOW_WIDTH)
         {
             if (xp < 10) xp += speed_text;

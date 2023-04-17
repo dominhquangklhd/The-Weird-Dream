@@ -6,49 +6,8 @@ void MainObject::Show(SDL_Renderer* des)
 //Runnn
     if (status_ == RUN)
     {
-        switch (frame_)
-        {
-        case 0:
-            {
-            LoadImg("Character//MainCharacter1.png", des);
-            }
-            break;
-        case 1:
-            {
-            LoadImg("Character//MainCharacter2.png", des);
-            }
-            break;
-        case 2:
-            {
-            LoadImg("Character//MainCharacter3.png", des);
-            }
-            break;
-        case 3:
-            {
-            LoadImg("Character//MainCharacter4.png", des);
-            }
-            break;
-        case 4:
-            {
-            LoadImg("Character//MainCharacter5.png", des);
-            }
-            break;
-        case 5:
-            {
-            LoadImg("Character//MainCharacter6.png", des);
-            }
-            break;
-        case 6:
-            {
-            LoadImg("Character//MainCharacter7.png", des);
-            }
-            break;
-        case 7:
-            {
-            LoadImg("Character//MainCharacter8.png", des);
-            }
-            break;
-        }
+
+    LoadImg(link_run[frame_], des);
 
     rectC_.x = ON_THE_GROUND_X;
     rectC_.y = ON_THE_GROUND_Y;
@@ -89,49 +48,8 @@ void MainObject::Show(SDL_Renderer* des)
 //Attackkk
     if (status_ == ATTACK)
     {
-        switch (fAttack_)
-        {
-        case 0:
-            {
-            LoadImg("Character//C_Attack1.png", des);
-            }
-            break;
-        case 1:
-            {
-            LoadImg("Character//C_Attack2.png", des);
-            }
-            break;
-        case 2:
-            {
-            LoadImg("Character//C_Attack3.png", des);
-            }
-            break;
-        case 3:
-            {
-            LoadImg("Character//C_Attack4.png", des);
-            }
-            break;
-        case 4:
-            {
-            LoadImg("Character//C_Attack5.png", des);
-            }
-            break;
-        case 5:
-            {
-            LoadImg("Character//C_Attack6.png", des);
-            }
-            break;
-        case 6:
-            {
-            LoadImg("Character//C_Attack7.png", des);
-            }
-            break;
-        case 7:
-            {
-            LoadImg("Character//C_Attack8.png", des);
-            }
-            break;
-        }
+
+    LoadImg(link_attack[fAttack_], des);
 
     if (rectC_.y < ON_THE_GROUND_Y && fAttack_ <= 7)
     {
@@ -146,6 +64,12 @@ void MainObject::Show(SDL_Renderer* des)
         }
     }
 
+    SDL_RenderCopy(des, p_object_ , NULL, &rectC_);
+
+    fAttack_ = slowdownAT_/SLOW_ACTION;
+    slowdownAT_++;
+
+    if (fAttack_ == 3) power_ = true;
 
     if (rectC_.y < ON_THE_GROUND_Y && fAttack_ >= 8)
     {
@@ -153,13 +77,6 @@ void MainObject::Show(SDL_Renderer* des)
         fAttack_ = 0;
         slowdownAT_ = 0;
     }
-
-    SDL_RenderCopy(des, p_object_ , NULL, &rectC_);
-
-    fAttack_ = slowdownAT_/SLOW_ACTION;
-    slowdownAT_++;
-
-    if (fAttack_ == 3) power_ = true;
 
      if (fAttack_ >= 8 && rectC_.y == ON_THE_GROUND_Y)
      {
@@ -172,46 +89,15 @@ void MainObject::Show(SDL_Renderer* des)
 //Power
     if (power_ == true)
     {
-        switch (fPower_)
-        {
-        case 0:
-            {
-            LoadImg("Character//charged1.png", des);
-            }
-            break;
-        case 1:
-            {
-            LoadImg("Character//charged2.png", des);
-            }
-            break;
-        case 2:
-            {
-            LoadImg("Character//charged3.png", des);
-            }
-            break;
-        case 3:
-            {
-            LoadImg("Character//charged4.png", des);
-            }
-            break;
-        case 4:
-            {
-            LoadImg("Character//charged5.png", des);
-            }
-            break;
-        case 5:
-            {
-            LoadImg("Character//charged6.png", des);
-            }
-            break;
-        }
+    LoadImg(link_power[fPower_], des);
 
-        if (fPower_ == 0)
-        {
-            rectPW_.x = rectC_.x;
-            rectPW_.y = rectC_.y -  20;
-        }
-        else rectPW_.x += 20;
+    if (fPower_ == 0)
+    {
+        rectPW_.x = rectC_.x;
+        rectPW_.y = rectC_.y -  20;
+    }
+    else rectPW_.x += 20;
+
     rectPW_.w = width_frame_;
     rectPW_.h = height_frame_;
 
@@ -235,44 +121,7 @@ void MainObject::Show(SDL_Renderer* des)
 //hittt
     if (hits_ == true)
     {
-        switch (fHits_)
-        {
-        case 0:
-            {
-            LoadImg("Character//hits_41.png", des);
-            }
-            break;
-        case 1:
-            {
-            LoadImg("Character//hits_42.png", des);
-            }
-            break;
-        case 2:
-            {
-            LoadImg("Character//hits_43.png", des);
-            }
-            break;
-        case 3:
-            {
-            LoadImg("Character//hits_44.png", des);
-            }
-            break;
-        case 4:
-            {
-            LoadImg("Character//hits_45.png", des);
-            }
-            break;
-        case 5:
-            {
-            LoadImg("Character//hits_46.png", des);
-            }
-            break;
-        case 6:
-            {
-            LoadImg("Character//hits_47.png", des);
-            }
-            break;
-        }
+    LoadImg(link_hit[fHits_], des);
 
     fHits_ = slowdownHITS_/SLOW_ACTION;
     slowdownHITS_++;
@@ -296,49 +145,8 @@ void MainObject::Show(SDL_Renderer* des)
 
     if (status_ == DEAD)
     {
-        switch (fDead_)
-        {
-        case 0:
-            {
-            LoadImg("Character//death1.png", des);
-            }
-            break;
-        case 1:
-            {
-            LoadImg("Character//death2.png", des);
-            }
-            break;
-        case 2:
-            {
-            LoadImg("Character//death3.png", des);
-            }
-            break;
-        case 3:
-            {
-            LoadImg("Character//death4.png", des);
-            }
-            break;
-        case 4:
-            {
-            LoadImg("Character//death5.png", des);
-            }
-            break;
-        case 5:
-            {
-            LoadImg("Character//death6.png", des);
-            }
-            break;
-        case 6:
-            {
-            LoadImg("Character//death7.png", des);
-            }
-            break;
-        case 7:
-            {
-            LoadImg("Character//death8.png", des);
-            }
-            break;
-        }
+
+    LoadImg(link_death[fDead_], des);
 
     if (rectC_.y < ON_THE_GROUND_Y && fAttack_ <= 7)
     {
@@ -357,8 +165,9 @@ void MainObject::Show(SDL_Renderer* des)
 
     fDead_ = slowdownDEAD_/SLOW_ACTION;
     slowdownDEAD_++;
+
     if (fDead_ > 7) fDead_ = 7;
-    std::cout << slowdownDEAD_ << std::endl;
+
     if (slowdownDEAD_ >= 8*SLOW_ACTION && rectC_.y == ON_THE_GROUND_Y)
     {
         slowdownDEAD_ = 0;
